@@ -3,20 +3,29 @@
 
 import React from "react";
 import {
-  FormControl,   // wraps label + input for accessibility
-  InputLabel,    // the floating label above select
-  Select,        // dropdown component
-  MenuItem,      // individual option inside Select
-  Button,        // MUI button
-  Box,           // layout div
+  FormControl, // wraps label + input for accessibility
+  InputLabel, // the floating label above select
+  Select, // dropdown component
+  MenuItem, // individual option inside Select
+  Button, // MUI button
+  Box, // layout div
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search"; // MUI icon
-import { CITIES } from "../utils/weatherUtils";
+
+// A few preset cities with their lat/lon coordinates
+const CITIES = [
+  { name: "Stockholm", lat: 59.33, lon: 18.07 },
+  { name: "London", lat: 51.51, lon: -0.13 },
+  { name: "New York", lat: 40.71, lon: -74.01 },
+  { name: "Tokyo", lat: 35.68, lon: 139.69 },
+  { name: "Sydney", lat: -33.87, lon: 151.21 },
+  { name: "Paris", lat: 48.85, lon: 2.35 },
+];
 
 interface CitySelectorProps {
   selectedCity: string;
   onCityChange: (city: string) => void;
-  onSearch: () => void;         // ← USER EVENT: triggers the API call
+  onSearch: () => void; // ← USER EVENT: triggers the API call
   loading: boolean;
 }
 
@@ -55,7 +64,6 @@ const CitySelector: React.FC<CitySelectorProps> = ({
         </Select>
       </FormControl>
 
-      
       <Button
         variant="contained"
         size="large"
@@ -65,10 +73,10 @@ const CitySelector: React.FC<CitySelectorProps> = ({
         sx={{
           backgroundColor: "#2d6a9f",
           "&:hover": {
-            backgroundColor: "#1e3a5f",  // darker on hover (sx pseudo-class)
+            backgroundColor: "#1e3a5f", // darker on hover (sx pseudo-class)
           },
-          px: 4,       // padding x-axis
-          py: 1.5,     // padding y-axis
+          px: 4, // padding x-axis
+          py: 1.5, // padding y-axis
           borderRadius: 2,
           fontWeight: 700,
           textTransform: "none", // prevent ALL CAPS default
