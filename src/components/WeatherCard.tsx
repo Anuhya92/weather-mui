@@ -1,6 +1,3 @@
-// components/WeatherCard.tsx
-// Displays weather data using MUI components with sx prop and props
-
 import React from "react";
 import { Card, CardContent, Typography, Box, Chip, Divider} from "@mui/material";
 import { WeatherData } from "../types";
@@ -53,7 +50,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weather }) => {
           sx={{
             fontWeight: 800,
             color: "white",
-            fontSize: { xs: "3.5rem", sm: "4.5rem" }, // RESPONSIVE: smaller on mobile
+            fontSize: { xs: "3.5rem", sm: "4.5rem" }, 
             lineHeight: 1,
             mb: 1,
           }}
@@ -64,7 +61,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weather }) => {
         <Chip
           label={weather.description}
           sx={{
-            backgroundColor: "rgba(255,255,255,0.2)", // semi-transparent white
+            backgroundColor: "rgba(255,255,255,0.2)", 
             color: "white",
             fontWeight: 600,
             mb: 2,

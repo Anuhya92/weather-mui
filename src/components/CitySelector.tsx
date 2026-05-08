@@ -1,16 +1,13 @@
-// components/CitySelector.tsx
-// Dropdown + button to trigger the API call
-
 import React from "react";
 import {
-  FormControl, // wraps label + input for accessibility
-  InputLabel, // the floating label above select
-  Select, // dropdown component
-  MenuItem, // individual option inside Select
-  Button, // MUI button
-  Box, // layout div
+  FormControl, 
+  InputLabel, 
+  Select, 
+  MenuItem, 
+  Button, 
+  Box, 
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search"; // MUI icon
+import SearchIcon from "@mui/icons-material/Search"; 
 
 // A few preset cities with their lat/lon coordinates
 const CITIES = [
@@ -25,7 +22,7 @@ const CITIES = [
 interface CitySelectorProps {
   selectedCity: string;
   onCityChange: (city: string) => void;
-  onSearch: () => void; // ← USER EVENT: triggers the API call
+  onSearch: () => void; 
   loading: boolean;
 }
 
@@ -39,13 +36,12 @@ const CitySelector: React.FC<CitySelectorProps> = ({
     <Box
       sx={{
         display: "flex",
-        flexDirection: { xs: "column", sm: "row" }, // column on mobile, row on tablet+
+        flexDirection: { xs: "column", sm: "row" }, 
         gap: 2,
         alignItems: { xs: "stretch", sm: "center" },
         mb: 4,
       }}
     >
-      {/* MUI FormControl + Select dropdown */}
       <FormControl sx={{ minWidth: 200, flex: 1 }}>
         <InputLabel id="city-label">Select City</InputLabel>
 
@@ -73,13 +69,13 @@ const CitySelector: React.FC<CitySelectorProps> = ({
         sx={{
           backgroundColor: "#2d6a9f",
           "&:hover": {
-            backgroundColor: "#1e3a5f", // darker on hover (sx pseudo-class)
+            backgroundColor: "#1e3a5f", 
           },
-          px: 4, // padding x-axis
-          py: 1.5, // padding y-axis
+          px: 4, 
+          py: 1.5, 
           borderRadius: 2,
           fontWeight: 700,
-          textTransform: "none", // prevent ALL CAPS default
+          textTransform: "none", 
         }}
       >
         {loading ? "Loading..." : "Get Weather"}

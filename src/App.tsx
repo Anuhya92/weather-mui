@@ -1,6 +1,3 @@
-// App.tsx - Main component
-// App 2: Weather App using Open-Meteo API + MUI
-
 import React, { useEffect, useState } from "react";
 import {
   Container,
