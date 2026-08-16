@@ -1,44 +1,62 @@
-# Weather App (MUI)
+For this testing exercise, I used an old project — a weather lookup app built with React and Material UI (MUI) — as the codebase . The app lets a user search for a city, fetches live weather data from the Open-Meteo API, and displays the result.
 
-A responsive React application built with TypeScript and Material-UI (MUI) that fetches and displays weather data for cities using the Open-Meteo API.
+# The app's structure (3 main pieces):
 
-## Features
+- App — the container. Holds the search input and button, calls Open-Meteo's geocoding API to resolve a city name to           coordinates, then calls the forecast API to get weather data, manages loading/error state, and updates the browser tab title.
 
-- Search for cities and fetch current weather data
-- Displays temperature, description, emoji, and wind speed
-- Responsive design for mobile and desktop
-- User-triggered API calls via search button
-- Error handling for invalid cities or API failures
+- CitySelector — an MUI Autocomplete combobox for picking a city from a known list, with typeahead filtering.
 
-## Technologies
+- WeatherCard — a purely presentational component that displays one city's weather (temperature, description, wind speed, emoji), given a weather object as a prop.
 
-- React 18
-- TypeScript
-- Material-UI (MUI)
-- Open-Meteo API (for geocoding and weather data)
+## Test structure
 
-## Installation
 
-1. Clone the repository:
- `https://github.com/Anuhya92/weather-mui.git`
+__tests__/
+├── integration/
+│   └── App.integration.test.tsx   # App + real fetch flow, mocked at the network boundary
+└── unit/
+    ├── App.test.tsx               # App's static/default UI, in isolation
+    ├── CitySelector.test.tsx      # Autocomplete behavior in isolation
+    └── WeatherCard.test.tsx       # Presentational rendering in isolation
 
-2. Install dependencies:
-  `npm install`
- 
-3. Start the development server:
-  `npm run start` 
-4. Open ` http://localhost:3000 `in your browser.
 
-## Usage
+- *Unit tests* : render a single component with controlled props/mocked callbacks and assert on its own behavior only.
 
-- Enter a city name in the search field and click "Search" to fetch weather data.
-- The app will display the weather card with current conditions.
+- *Integration test* :  renders the real App (which composes the other components internally) and drives it exactly as a user would — typing, clicking — with only global.fetch mocked. This verifies the components actually work together, not just individually.
 
-## API
 
-- Geocoding: [Open-Meteo Geocoding API](https://geocoding-api.open-meteo.com/)
-- Weather: [Open-Meteo Forecast API](https://api.open-meteo.com/)
+# Tests
 
-## License
+This directory contains unit tests and integration tests for the weather app.
 
-This project is for educational purposes.
+## Structure
+
+- `__tests__/` - Contains all test files for the application
+
+## Setup
+
+Run script `npm install` in project root directory, where **package.json** exists
+
+## Running Tests
+
+To run all tests (unit + integration):
+
+```bash
+npm run test
+```
+
+## React Testing Library commands
+Used the following commands to extract the content for assertions
+ - getByRole
+ - getByText 
+ - getByLabelText
+ - getByPlaceholderText
+ - getAllByRole
+ - queryAllByRole
+ - render
+ - fireEvent -> used to trigger actions like click on a button
+ - userEvent -> used to trigger keydown event in an input field
+
+ ## Jest important functions
+ - Jest.fn -> used to mock function that does api call to fetch weather forecast information
+
