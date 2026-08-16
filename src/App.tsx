@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import WeatherCard from "./components/WeatherCard";
 import { WeatherData } from "./types";
+import CitySelector from "./components/CitySelector";
 
 const weatherCodeMap: Record<number, { description: string; emoji: string }> = {
   0: { description: "Clear sky", emoji: "☀️" },
@@ -37,8 +38,12 @@ const App: React.FC = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    document.title = "Weather App";
+  }, []);
+
+  useEffect(() => {
     if (weather) {
-      document.title = `Weather • ${weather.city}`;
+      document.title = `${weather.city} Weather`;
     }
   }, [weather]);
 
@@ -59,6 +64,7 @@ const App: React.FC = () => {
         )}&count=1`,
       );
       const geoJson = await geoResp.json();
+      console.log("GeoJSON response:", JSON.stringify(geoJson));
 
       if (!geoJson.results || geoJson.results.length === 0) {
         throw new Error("City not found");
@@ -93,6 +99,16 @@ const App: React.FC = () => {
     }
   };
 
+  const defaultCities = [
+    "New York",
+    "London",
+    "Paris",
+    "Tokyo",
+    "Berlin",
+    "Sydney",
+    "Mumbai",
+  ];
+
   return (
     <Container
       maxWidth="sm"
@@ -115,6 +131,9 @@ const App: React.FC = () => {
         <Typography color="text.secondary">
           Search a city and fetch live weather from Open-Meteo.
         </Typography>
+        <Typography color="text.secondary" sx={{ mt: 1 }}>
+          Choose a city from the list or type one manually and press Search.
+        </Typography>
       </Box>
 
       <Box
@@ -126,9 +145,16 @@ const App: React.FC = () => {
           alignItems: "center",
         }}
       >
+        <CitySelector
+          options={defaultCities}
+          onSelect={(city) => {
+            setQuery(city ?? "");
+          }}
+        />
+
         <TextField
           fullWidth
-          label="City"
+          label="Please enter a city"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
@@ -136,10 +162,11 @@ const App: React.FC = () => {
           }}
         />
         <Button
+          role="button"
           variant="contained"
           size="large"
           onClick={fetchWeather}
-          disabled={loading}
+          disabled={loading || !query}
           sx={{ whiteSpace: "nowrap" }}
         >
           {loading ? <CircularProgress size={20} color="inherit" /> : "Search"}

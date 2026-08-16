@@ -27,7 +27,7 @@ A responsive React application built with TypeScript and Material-UI (MUI) that 
  
 3. Start the development server:
   `npm run start` 
-4. Open [http://localhost:5173](http://localhost:5173) in your browser.
+4. Open ` http://localhost:3000 `in your browser.
 
 ## Usage
 
