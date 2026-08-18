@@ -51,8 +51,6 @@ describe("App integration", () => {
 
   test("should display an error when trying to fetch weather for an invalid city", async () => {
     render(<App />);
-
-    // Enter an invalid city name
     const input = screen.getByLabelText(/Please enter a city/i);
     fireEvent.change(input, { target: { value: "InvalidCityName" } });
     expect(input).toHaveValue("InvalidCityName");
@@ -68,7 +66,6 @@ describe("App integration", () => {
   test("should not display an error when trying to fetch weather for a valid city", async () => {
     render(<App />);
 
-    // Enter a valid city name
     const input = screen.getByLabelText(/Please enter a city/i);
     fireEvent.change(input, { target: { value: "Stockholm" } });
     expect(input).toHaveValue("Stockholm");
@@ -93,5 +90,23 @@ describe("App integration", () => {
     fireEvent.click(screen.getByRole("button", { name: /search/i }));
 
     await waitFor(() => expect(document.title).toBe("Stockholm Weather"));
+  });
+  test("a successful search adds the city to Recent Searches, and clicking it refills the input", async () => {
+    render(<App />);
+
+    const input = screen.getByLabelText(/Please enter a city/i);
+    fireEvent.change(input, { target: { value: "Stockholm" } });
+    fireEvent.click(screen.getByRole("button", { name: /search/i }));
+
+    await waitFor(() => expect(document.title).toBe("Stockholm Weather"));
+    expect(
+      screen.getByText(/recent searches/i),
+    ).toBeInTheDocument();
+
+    fireEvent.change(input, { target: { value: "" } });
+    expect(input).toHaveValue("");
+
+    fireEvent.click(screen.getByRole("button", { name: "Stockholm" }));
+    expect(input).toHaveValue("Stockholm");
   });
 });

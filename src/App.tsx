@@ -11,6 +11,9 @@ import {
 import WeatherCard from "./components/WeatherCard";
 import { WeatherData } from "./types";
 import CitySelector from "./components/CitySelector";
+import Header from "./components/Header";
+import RecentSearches from "./components/RecentSearches";
+import Footer from "./components/Footer";
 
 const weatherCodeMap: Record<number, { description: string; emoji: string }> = {
   0: { description: "Clear sky", emoji: "☀️" },
@@ -36,6 +39,7 @@ const App: React.FC = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [recentCities, setRecentCities] = useState<string[]>([]);
 
   useEffect(() => {
     document.title = "Weather App";
@@ -92,13 +96,17 @@ const App: React.FC = () => {
         emoji: meta.emoji,
         weathercode: weathercode,
       });
+
+    
+      setRecentCities((prev) =>
+        [name, ...prev.filter((city) => city !== name)].slice(0, 5),
+      );
     } catch (err) {
       setError((err as Error).message || "Fetch failed");
     } finally {
       setLoading(false);
     }
   };
-
   const defaultCities = [
     "New York",
     "London",
@@ -119,22 +127,8 @@ const App: React.FC = () => {
           "linear-gradient(180deg, #eef2ff 0%, rgba(229, 231, 235, 0.8) 100%)",
       }}
     >
-      <Box
-        sx={{
-          mb: 4,
-          textAlign: "center",
-        }}
-      >
-        <Typography variant="h3" component="h1" sx={{ fontWeight: 700, mb: 1 }}>
-          Weather Lookup
-        </Typography>
-        <Typography color="text.secondary">
-          Search a city and fetch live weather from Open-Meteo.
-        </Typography>
-        <Typography color="text.secondary" sx={{ mt: 1 }}>
-          Choose a city from the list or type one manually and press Search.
-        </Typography>
-      </Box>
+      <Header />
+
 
       <Box
         sx={{
@@ -172,6 +166,7 @@ const App: React.FC = () => {
           {loading ? <CircularProgress size={20} color="inherit" /> : "Search"}
         </Button>
       </Box>
+      <RecentSearches cities={recentCities} onSelect={setQuery} />
 
       {error && (
         <Alert severity="error" sx={{ mb: 3 }}>
@@ -180,6 +175,8 @@ const App: React.FC = () => {
       )}
 
       {weather && <WeatherCard weather={weather} />}
+
+      <Footer />
     </Container>
   );
 };
